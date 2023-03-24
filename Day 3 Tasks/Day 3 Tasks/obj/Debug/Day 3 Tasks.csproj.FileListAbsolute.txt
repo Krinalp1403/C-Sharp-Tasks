@@ -1,0 +1,8 @@
+D:\Krinal\Day 3 Tasks\Day 3 Tasks\bin\Debug\Day 3 Tasks.exe.config
+D:\Krinal\Day 3 Tasks\Day 3 Tasks\bin\Debug\Day 3 Tasks.exe
+D:\Krinal\Day 3 Tasks\Day 3 Tasks\bin\Debug\Day 3 Tasks.pdb
+D:\Krinal\Day 3 Tasks\Day 3 Tasks\obj\Debug\Day 3 Tasks.csproj.AssemblyReference.cache
+D:\Krinal\Day 3 Tasks\Day 3 Tasks\obj\Debug\Day 3 Tasks.csproj.SuggestedBindingRedirects.cache
+D:\Krinal\Day 3 Tasks\Day 3 Tasks\obj\Debug\Day 3 Tasks.csproj.CoreCompileInputs.cache
+D:\Krinal\Day 3 Tasks\Day 3 Tasks\obj\Debug\Day 3 Tasks.exe
+D:\Krinal\Day 3 Tasks\Day 3 Tasks\obj\Debug\Day 3 Tasks.pdb
