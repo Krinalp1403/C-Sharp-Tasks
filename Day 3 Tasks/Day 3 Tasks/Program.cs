@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Microsoft.SqlServer.Server;
+using System;
+using System.IO;
 
 
 namespace Day_3_Tasks
 {
+    public static class DateFormateExt { 
+    public static string DateFormate(this DateTime date, string format)
+    {
+        return date.ToString(format);
+    }
+    }
+
+
     class Program
     {
 
@@ -18,16 +20,22 @@ namespace Day_3_Tasks
         {
             do
             {
-                Console.WriteLine("------------------------- MENU ---------------------------\n");
+                Console.WriteLine("\n------------------------- MENU ---------------------------\n");
 
-                Console.WriteLine("1. Write your name 5 times");
-                Console.WriteLine("2. Write a method that returns a string of even numbers greater than 0 and less than 50");
-                Console.WriteLine("3. Count negative elements in array");
-                Console.WriteLine("4. Find maximum and minimum element in array");
-                Console.WriteLine("5. count even and odd elements in array");
-                Console.WriteLine("6. program to print int, string and int, string value by function overloading - use same method name");
-                Console.WriteLine("7. sum of two integer value, three integer value and three double values - use same method name");
-                Console.WriteLine("8. Exit");
+                Console.WriteLine("1. Create a file and add some text");
+                Console.WriteLine("2. Create a file with text and read the file");
+                Console.WriteLine("3. Create a file and write an array of strings to the file");
+                Console.WriteLine("4. Append some text to an existing file");
+                Console.WriteLine("5. Read the first line from a file");
+                Console.WriteLine("6. Count the number of lines in a file");
+                Console.WriteLine("7. Throw a Simple Exception and handle it");
+                Console.WriteLine("8. Exception Handling Division");
+                Console.WriteLine("9. Returns today's date in user given date format");
+                Console.WriteLine("10. Throw ArgumentNullException and handle it");
+                Console.WriteLine("11. Store User Email Address in encrypted format and retrive it in original form");
+                Console.WriteLine("12. Retrieve the user password from the Configuration file and encrypt it and store it in file");
+                Console.WriteLine("0. Exit");
+
 
 
 
@@ -39,24 +47,29 @@ namespace Day_3_Tasks
                 switch (task)
                 {
                     case 1:
+
+                        string fileName1 = @"D:\C# Training\Day 3 Tasks\Files\KPTask1.txt";
                         try
                         {
-                            Console.WriteLine("\n--------------- Print your name 5 times -------------------------");
+                            Console.WriteLine("\n--------------- create a file and add some text -------------------------");
 
-                            Console.Write("\nEnter your Name : ");
-                            string name = Console.ReadLine();
-
-                            for (int i = 1; i <= 5; i++)
+                            if (File.Exists(fileName1))
                             {
-                                Console.WriteLine("Your Name is : " + name);
-
+                                File.Delete(fileName1);
                             }
-                            Console.Write("\nPress Enter to Proceed..!!");
+
+                            Console.WriteLine("\nEnter Text to Write in File and press enter to insert into file : ");
+                            var text = Convert.ToString(Console.ReadLine());
+                            //var text = "This is for testing file created in Task 1 By Krinal Patel";
+                            File.WriteAllText(fileName1, text);
+                            Console.WriteLine("\nFile Created and user inputed text is written in it..!!");
+                            Console.WriteLine("\nPress Enter to proceed further..!!");
+
 
                         }
                         catch (Exception)
                         {
-                            Console.WriteLine("Enter Valid Input");
+                            Console.WriteLine("Something Went Wrong ! Please Restart the menu by pressing Enter..");
                         }
 
                         Console.ReadLine(); //waits for enter button to be pressed to exit console
@@ -64,46 +77,77 @@ namespace Day_3_Tasks
                         break;
                     case 2:
 
-                        Console.WriteLine("\n---------------  Even numbers greater than 0 and less than 50 -------------------------");
-
-                        for (int i = 0; i < 50; i++)
+                        string fileName2 = @"D:\C# Training\Day 3 Tasks\Files\KPTask2.txt";
+                        try
                         {
-                            if (i == 2 || i == 12 || i == 22 || i == 32 || i == 42)
+
+                            Console.WriteLine("\n---------------  Create a file with text and read the file -------------------------");
+
+                            if (File.Exists(fileName2))
                             {
-                                continue;
+                                File.Delete(fileName2);
                             }
 
-                            if (i % 2 == 0)
+                            using (StreamWriter sw = File.CreateText(fileName2))
                             {
-                                Console.WriteLine(i);
-
+                                sw.WriteLine("This is for hardcoded text for testing Task 2 by Krinal Patel");
+                                sw.WriteLine("This is for Training purpose in Satva Solutions");
+                                sw.WriteLine("Trainee Web Developer");
+                                sw.WriteLine("Krinal Patel");
+                                sw.WriteLine("From Unjha, Mehsana");
                             }
-
-                            //2,12,22,32,42 skip
+                            Console.WriteLine("File is created successfully..!!");
+                            Console.WriteLine("Reading from the file..");
+                            using (StreamReader sr = File.OpenText(fileName2))
+                            {
+                                string s = "";
+                                Console.WriteLine("\nKPTask2.txt File Content : \n");
+                                while ((s = sr.ReadLine()) != null)
+                                {
+                                    Console.WriteLine(s);
+                                }
+                                Console.WriteLine("");
+                            }
+                            Console.Write("Press Enter to Proceed..!!");
                         }
-                        Console.Write("\nPress Enter to Proceed..!!");
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Something Went Wrong ! Please Restart the menu by pressing Enter..");
+
+                        }
                         Console.ReadLine(); //waits for enter button to be pressed to exit console
                         break;
 
                     case 3:
+                        string fileName3 = @"D:\C# Training\Day 3 Tasks\Files\KPTask3.txt";
+
                         try
                         {
-                            Console.WriteLine("\n--------------- Count Netagive Numbers -------------------------");
+                            Console.WriteLine("\n--------------- Create a file and write an array of strings to the file -------------------------");
 
-                            Console.Write("Enter Length of Arrray  : ");
+                            if (File.Exists(fileName3))
+                            {
+                                File.Delete(fileName3);
+                            }
+
+                            Console.Write("Enter Array Length : ");
                             var length = Convert.ToInt32(Console.ReadLine());
-                            double[] numbers = new double[length]; //Taking Array
 
+                            string[] array3 = new string[length];
+                            Console.WriteLine("Enter Strings from below : ");
                             for (int i = 0; i < length; i++)
                             {
-                                Console.Write("\nEnter Numbers " + i + " : ");
-                                numbers[i] = Convert.ToDouble(Console.ReadLine());
-
+                                Console.Write("Input Line : ", i + 1);
+                                array3[i] = Convert.ToString(Console.ReadLine());
                             }
-                            var negative = numbers.Where(n => n < 0);
-                            Console.WriteLine("Total Negative numbers : " + negative.Count());
-                            Console.ReadLine(); //waits for enter button to be pressed to exit console
-
+                            using (StreamWriter sw = File.CreateText(fileName3))
+                            {
+                                foreach (string s in array3)
+                                {
+                                    sw.WriteLine(s);
+                                }
+                            }
+                            Console.Write("\nFile is created successfully..!!");
                             Console.Write("\nPress Enter to Proceed..!!");
 
                         }
@@ -116,27 +160,24 @@ namespace Day_3_Tasks
 
                     case 4:
 
+                        string fileName4 = @"D:\C# Training\Day 3 Tasks\Files\KPTask4.txt";
 
                         try
                         {
-                            Console.WriteLine("\n--------------- Maximum and Minimum -------------------------");
+                            Console.WriteLine("\n--------------- Append some text to an existing file -------------------------");
 
-                            Console.Write("Enter Length of Arrray  : ");
-                            var length = Convert.ToInt32(Console.ReadLine());
-                            double[] numbers = new double[length]; //Taking Array
+                            var text = "This is for testing file created in Task 4 which is to be appended by some other text By Krinal Patel";
+                            File.WriteAllText(fileName4, text);
 
-                            for (int i = 0; i < length; i++)
+                            using (StreamWriter sw = File.AppendText(fileName4))
                             {
-                                Console.Write("Enter Numbers " + i + " : ");
-                                numbers[i] = Convert.ToDouble(Console.ReadLine());
-
+                                Console.WriteLine("\nEnter Text to Write in File and press enter to append into file : ");
+                                var appendtext = Convert.ToString(Console.ReadLine());
+                                sw.WriteLine(appendtext);
+                                Console.WriteLine("\nFile Created and user inputed text is appended in it..!!");
                             }
-                            Console.WriteLine("Maximum number : " + numbers.Max());
-                            Console.WriteLine("Minimum number : " + numbers.Min());
-
                             Console.Write("\nPress Enter to Proceed..!!");
                             Console.ReadLine(); //waits for enter button to be pressed to exit console
-
 
                         }
                         catch (Exception)
@@ -147,26 +188,32 @@ namespace Day_3_Tasks
 
                     case 5:
 
+                        string fileName5 = @"D:\C# Training\Day 3 Tasks\Files\KPTask5.txt";
+
                         try
                         {
-                            Console.WriteLine("\n--------------- Count Even Odd -------------------------");
+                            Console.WriteLine("\n--------------- Read the first line from a file -------------------------");
 
-                            Console.Write("Enter Length of Arrray  : ");
-                            var length = Convert.ToInt32(Console.ReadLine());
-                            int[] numbers = new int[length]; //Taking Array
-
-                            for (int i = 0; i < length; i++)
+                            if (File.Exists(fileName5))
                             {
-                                Console.Write("\nEnter Numbers " + i + " : ");
-                                numbers[i] = Convert.ToInt32(Console.ReadLine());
-
+                                File.Delete(fileName5);
                             }
 
-                            var even = numbers.Where(n => n % 2 == 0);
-                            Console.WriteLine("Total Even numbers : " + even.Count());
+                            using (StreamWriter sw = File.CreateText(fileName5))
+                            {
+                                sw.WriteLine("This is for hardcoded line 1 created by Krinal Patel");
+                                sw.WriteLine("This is for Training purpose in Satva Solutions");
+                                sw.WriteLine("Trainee Web Developer");
+                                sw.WriteLine("Krinal Patel");
+                                sw.WriteLine("From Unjha, Mehsana");
+                            }
 
-                            var odd = numbers.Where(n => n % 2 != 0);
-                            Console.WriteLine("Total Odd numbers : " + odd.Count());
+                            if (File.Exists(fileName5))
+                            {
+                                string[] lines = File.ReadAllLines(fileName5);
+                                Console.Write("\nLine 1 : " + lines[0]);
+                            }
+
 
                             Console.Write("\nPress Enter to Proceed..!!");
                             Console.ReadLine(); //waits for enter button to be pressed to exit console
@@ -179,53 +226,40 @@ namespace Day_3_Tasks
 
                     case 6:
 
-                        int num = Print(8, 5);
-                        string str = Print("Krinal", "Patel");
-                        Console.WriteLine("Int: " + num);
-                        Console.WriteLine("String: " + str);
-                        Console.Write("\nPress Enter to Proceed..!!");
-
-                        Console.ReadLine();
-                        break;
-
-                    case 7:
+                        string fileName6 = @"D:\C# Training\Day 3 Tasks\Files\KPTask6.txt";
 
                         try
                         {
-                            Console.WriteLine("\n--------------- Function overloading -------------------------");
+                            Console.WriteLine("\n---------------  count the number of lines in a file -------------------------");
 
-                            Console.Write("Enter Number 1 : ");
-                            var no1 = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Enter Number 2 : ");
-                            var no2 = Convert.ToInt32(Console.ReadLine());
+                            if (File.Exists(fileName6))
+                            {
+                                File.Delete(fileName6);
+                            }
 
-                            int Num = Add(no1, no2);               //Dynamic Parameter Passing
+                            using (StreamWriter sw = File.CreateText(fileName6))
+                            {
+                                sw.WriteLine("This is for hardcoded line 1 created by Krinal Patel");
+                                sw.WriteLine("This is for Training purpose in Satva Solutions");
+                                sw.WriteLine("Trainee Web Developer");
+                                sw.WriteLine("Krinal Patel");
+                                sw.WriteLine("From Unjha, Mehsana");
+                            }
 
-                            Console.WriteLine("\nAddition of two int value : " + Num);
+                            using (StreamReader sr = File.OpenText(fileName6))
+                            {
+                                string s = "";
+                                int count = 0;
+                                Console.WriteLine("File Content : \n");
+                                while ((s = sr.ReadLine()) != null)
+                                {
+                                    Console.WriteLine(s);
+                                    count++;
+                                }
+                                Console.WriteLine("");
+                                Console.Write("The number of lines in  the File : {0}\n", count);
 
-                            Console.Write("Enter Number 1 : ");
-                            var n1 = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Enter Number 2 : ");
-                            var n2 = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Enter Number 3 : ");
-                            var n3 = Convert.ToInt32(Console.ReadLine());
-
-                            int n = Add(n1, n2, n3);               //Dynamic Parameter Passing
-
-                            Console.WriteLine("\nAddition of three int value : " + n);
-
-
-
-                            Console.Write("Enter Double Number 1 : ");
-                            var d1 = Convert.ToDouble(Console.ReadLine());
-                            Console.Write("Enter Double Number 2 : ");
-                            var d2 = Convert.ToDouble(Console.ReadLine());
-                            Console.Write("Enter Double Number 3 : ");
-                            var d3 = Convert.ToDouble(Console.ReadLine());
-
-                            double d = Add(d1, d2, d3);               //Dynamic Parameter Passing
-
-                            Console.WriteLine("\nAddition of three double value : " + d);
+                            }
 
                             Console.Write("\nPress Enter to Proceed..!!");
                             Console.ReadLine(); //waits for enter button to be pressed to exit console
@@ -236,7 +270,93 @@ namespace Day_3_Tasks
                         }
                         break;
 
+
+                    case 7:
+
+                        try
+                        {
+                            Console.WriteLine("\n--------------- Throw a Simple Exception and handle it -------------------------");
+
+                            int[] number = { 1, 2, 3, 4, 5 };
+                            Console.WriteLine(number[15]);
+
+                            Console.Write("\nPress Enter to Proceed..!!");
+                            Console.ReadLine(); //waits for enter button to be pressed to exit console
+                        }
+                        catch (IndexOutOfRangeException e)
+                        {
+                            Console.WriteLine("\nException caught: {0}", e.Message);
+
+                        }
+                        break;
+
                     case 8:
+
+                        try
+                        {
+                            Console.WriteLine("\n--------------- Exception Handling Division -------------------------");
+
+                            Console.Write("Enter Number 1 : ");
+                            var no1 = Convert.ToInt32(Console.ReadLine());
+                            Console.Write("Enter Number 2 : ");
+                            var no2 = Convert.ToInt32(Console.ReadLine());
+
+                            var div = no1 / no2;
+
+                            Console.WriteLine("Division =" + div);
+
+
+                            Console.Write("\nPress Enter to Proceed..!!");
+                            Console.ReadLine(); //waits for enter button to be pressed to exit console
+                        }
+                        catch (DivideByZeroException e)
+                        {
+                            Console.WriteLine("\nException caught: {0}", e.Message);
+
+                        }
+
+                        break;
+                    case 9:
+                        try
+                        {
+                            Console.Write("Enter Format : ");
+                            string format = Console.ReadLine();
+
+                            DateTime today = DateTime.Now;
+                            string final = today.DateFormate(format);                                           //F12 to Navigate to Extension
+                            Console.WriteLine(final);
+
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    case 10:
+
+                        try
+                        {
+                            Console.WriteLine("\n--------------- Throw ArgumentNullException and handle it -------------------------");
+
+                            string id = null;
+                            int result = int.Parse(id);
+                            Console.WriteLine(result);
+
+                            Console.Write("\nPress Enter to Proceed..!!");
+                            Console.ReadLine(); //waits for enter button to be pressed to exit console
+                        }
+                        catch (ArgumentNullException e)
+                        {
+                            Console.WriteLine("\nException caught: {0}", e.Message);
+                        }
+                        break;
+
+                    case 11:
+                        break;
+                    case 12:
+                        break;
+
+                    case 0:
                         Environment.Exit(1);// exit
 
                         break;
@@ -252,33 +372,32 @@ namespace Day_3_Tasks
             while (true);
 
         }
-
-        //7
-        static int Add(int x, int y)
-        {
-            return x + y;
-        }
-        static int Add(int x, int y, int z)
-        {
-            return x + y + z;
-        }
-        static double Add(double x, double y, double z)
-        {
-            return x + y + z;
-        }
-
-        //6
-        static int Print(int x, int y)
-        {
-            return x + y;
-        }
-
-        static string Print(string x, string y)
-        {
-            return x + y;
-        }
     }
-
 }
 
-////Thread.Sleep(10000);  //To Pause the output for 10 seconds
+
+
+//Format                                                                  Result
+
+//DateTime.Now.ToString("MM/dd/yyyy")	                                  05 / 29 / 2015
+//DateTime.Now.ToString("dddd, dd MMMM yyyy")                             Friday, 29 May 2015
+//DateTime.Now.ToString("dddd, dd MMMM yyyy")	                          Friday, 29 May 2015 05:50
+//DateTime.Now.ToString("dddd, dd MMMM yyyy")                             Friday, 29 May 2015 05:50 AM
+//DateTime.Now.ToString("dddd, dd MMMM yyyy")                             Friday, 29 May 2015 5:50
+//DateTime.Now.ToString("dddd, dd MMMM yyyy")                             Friday, 29 May 2015 5:50 AM
+//DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss")                    Friday, 29 May 2015 05:50:06
+//DateTime.Now.ToString("MM/dd/yyyy HH:mm")                               05 / 29 / 2015 05:50
+//DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")                            05 / 29 / 2015 05:50 AM
+//DateTime.Now.ToString("MM/dd/yyyy H:mm")                                05 / 29 / 2015 5:50
+//DateTime.Now.ToString("MM/dd/yyyy h:mm tt")                             05 / 29 / 2015 5:50 AM
+//DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")                            05 / 29 / 2015 05:50:06
+//DateTime.Now.ToString("MMMM dd")                                        May 29
+//DateTime.Now.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss.fffffffK")	      2015 - 05 - 16T05: 50:06.7199222 - 04:00
+//DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’")             Fri, 16 May 2015 05:50:06 GMT
+//DateTime.Now.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss")                  2015 - 05 - 16T05: 50:06
+//DateTime.Now.ToString("HH:mm")                                          05:50
+//DateTime.Now.ToString("hh:mm tt")                                       05:50 AM
+//DateTime.Now.ToString("H:mm")                                           5:50
+//DateTime.Now.ToString("h:mm tt")                                        5:50 AM
+//DateTime.Now.ToString("HH:mm:ss")                                       05:50:06
+//DateTime.Now.ToString("yyyy MMMM")                                      2015 May
