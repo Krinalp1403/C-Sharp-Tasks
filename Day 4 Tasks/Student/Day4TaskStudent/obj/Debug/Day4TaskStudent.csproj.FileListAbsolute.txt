@@ -1,0 +1,8 @@
+D:\Krinal\Day4TaskStudent\Day4TaskStudent\bin\Debug\Day4TaskStudent.exe.config
+D:\Krinal\Day4TaskStudent\Day4TaskStudent\bin\Debug\Day4TaskStudent.exe
+D:\Krinal\Day4TaskStudent\Day4TaskStudent\bin\Debug\Day4TaskStudent.pdb
+D:\Krinal\Day4TaskStudent\Day4TaskStudent\obj\Debug\Day4TaskStudent.csproj.AssemblyReference.cache
+D:\Krinal\Day4TaskStudent\Day4TaskStudent\obj\Debug\Day4TaskStudent.csproj.SuggestedBindingRedirects.cache
+D:\Krinal\Day4TaskStudent\Day4TaskStudent\obj\Debug\Day4TaskStudent.csproj.CoreCompileInputs.cache
+D:\Krinal\Day4TaskStudent\Day4TaskStudent\obj\Debug\Day4TaskStudent.exe
+D:\Krinal\Day4TaskStudent\Day4TaskStudent\obj\Debug\Day4TaskStudent.pdb

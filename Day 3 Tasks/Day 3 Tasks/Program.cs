@@ -1,7 +1,7 @@
-﻿using Microsoft.SqlServer.Server;
-using System;
+﻿using System;
+using System.Security.Cryptography;
 using System.IO;
-
+using System.Configuration;
 
 namespace Day_3_Tasks
 {
@@ -15,6 +15,29 @@ namespace Day_3_Tasks
 
     class Program
     {
+
+        private static string Encrypt(string strEncrypted)
+        {
+            byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(strEncrypted);
+            string encrypted = Convert.ToBase64String(b);
+            return encrypted;
+        }
+        private static string Decrypt(string encrString)
+        {
+            byte[] b;
+            string decrypted;
+            try
+            {
+                b = Convert.FromBase64String(encrString);
+                decrypted = System.Text.ASCIIEncoding.ASCII.GetString(b);
+            }
+            catch (FormatException)
+            {
+                decrypted = " ";
+
+            }
+            return decrypted;
+        }
 
         static void Main(string[] args)
         {
@@ -352,8 +375,51 @@ namespace Day_3_Tasks
                         break;
 
                     case 11:
+                        // Get the user's email address
+                        Console.Write("Enter your email address which you want to Encrypt = ");
+                        string email = Console.ReadLine();
+                        string fileName11 = @"D:\C# Training\Day 3 Tasks\Files\KPTask11.txt";
+
+                        var encryptedemail = Encrypt(email);
+                        var decryptedemail = Decrypt(encryptedemail);
+
+                        if (File.Exists(fileName11))
+                        {
+                            File.Delete(fileName11);
+                        }
+
+
+                        using (StreamWriter writer = new StreamWriter(fileName11))
+                        {
+                            writer.WriteLine(encryptedemail);
+
+                        }
+                        using (StreamReader reader = new StreamReader(fileName11))
+
+                        {
+                            Console.Write("Decrypted Email = "+decryptedemail);
+                            Console.ReadLine();
+
+                        }
                         break;
                     case 12:
+                        string fileName12 = @"D:\C# Training\Day 3 Tasks\Files\KPTask12.txt";
+
+                        string config = ConfigurationManager.AppSettings["password"];
+                        using(StreamWriter sw = File.CreateText(fileName12))
+                        {
+                            sw.WriteLine("Encrypted = "+ config);
+
+                        }
+                        using (StreamReader sr = File.OpenText(fileName12))
+                        {
+                            string s = "";
+                            while ((s = sr.ReadLine()) != null)
+                            {
+                                Console.WriteLine(s);
+                            }
+                            Console.ReadLine();
+                        }
                         break;
 
                     case 0:
