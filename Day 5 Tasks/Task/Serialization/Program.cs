@@ -11,61 +11,31 @@ using System.Xml.Serialization;
 
 namespace InheritanceTask1
 {
+    public class City
+    {
+        public string Name { get; set; }
+        public double Population { get; set; }
+
+        // Define a ToString() method to format the City object as a string
+        public override string ToString()
+        {
+            return $"City : {Name} \npopulation : {Population}";
+        }
+    }
     public class Person
     {
 
-        public string name;
-        public int age;
-        public string city;
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public City City { get; set; }
 
+        public override string ToString()
+        {
+            return $"Name : {Name} \nAge : {Age}\n {City}";
+        }
 
-        public void Display()
-        {
-            Console.WriteLine("-------------- This is Person Class ------------");
-            try
-            {
-                Console.Write("Enter Name : ");
-                name = Convert.ToString(Console.ReadLine());
-                Console.Write("Enter Age : ");
-                age = Convert.ToInt32(Console.ReadLine());
-                Console.Write("Enter City : ");
-                city = Convert.ToString(Console.ReadLine());
-               
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            
-        }
-        public void ToStrings()
-        {
-            Console.WriteLine($"Name: {name}");
-            Console.WriteLine($"Age: {age}");
-            Console.WriteLine($"City: {city}");
-        }
     }
-    public class City : Person
-    {
-        public double population;
-        public void getName()
-        {
-            Console.WriteLine("-------------- This is City Class ------------");
-            try
-            {
-                Console.Write("Enter Population : ");
-                population = Convert.ToDouble(Console.ReadLine());
 
-                Console.WriteLine("City Name  : " + city);
-                Console.WriteLine("Population : " + population);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-      
-    }
    
     public class Program
     {
@@ -73,32 +43,33 @@ namespace InheritanceTask1
         static void Main(string[] args)
         {
 
-            City c1 = new City();
+            Console.Write("Enter your Name : ");
+            string name = Console.ReadLine();
 
-            Console.WriteLine("--------------- Inheritance Implementation ----------------");
+            Console.Write("Enter your Age : ");
+            int age = int.Parse(Console.ReadLine());
 
-            c1.Display();
+            Console.Write("Enter your City : ");
+            string cityName = Console.ReadLine();
 
-            c1.getName();
-            Console.WriteLine("--------------- People Class Data ---------------");
+            Console.Write("Enter your City's population : ");
+            double population = double.Parse(Console.ReadLine());
 
-            Person p1 = new Person();
-            p1.Display();
+            // Create a Person object with the input values
+            var city = new City { Name = cityName, Population = population };
+            var person = new Person { Name = name, Age = age, City = city };
 
-            Console.WriteLine("--------------- Person class Data ----------------");
 
-            p1.ToStrings();
-
-            Console.WriteLine("Press Enter for JSON Serialization");
+            Console.Write("Press Enter for JSON Serialization");
             Console.ReadLine();
             Console.WriteLine("--------------- Serialization Implementation ----------------");
 
 
-            string jsonData = JsonConvert.SerializeObject(p1);
+            string jsonData = JsonConvert.SerializeObject(person);
             Console.WriteLine("--------------- JSON Serialize ----------------");
             Console.WriteLine(jsonData);
 
-            string fileName1 = @"D:\C# Training\Day 5 Tasks\Files\KPJSON1.json";
+            string fileName1 = @"D:\C# Krinal Patel\Day 5 Tasks\Files\KPJSON1.json";
 
             if (File.Exists(fileName1))
             {
@@ -118,17 +89,18 @@ namespace InheritanceTask1
             string jsonDataFromFile = File.ReadAllText(fileName1);
             Person p3 = JsonConvert.DeserializeObject<Person>(jsonDataFromFile);
 
-            Console.WriteLine(p3.name);
-            Console.WriteLine(p3.age);
-            Console.WriteLine(p3.city);
+            Console.WriteLine("Name : "+p3.Name);
+            Console.WriteLine("Age : "+p3.Age);
+            Console.WriteLine(p3.City);
 
             Console.WriteLine("Press Enter for XML Serialization");
-            Console.ReadLine();
-          
+
+            Console.ReadLine() ;
+
             Console.WriteLine("--------------- XML serialization ----------------");
 
             XmlSerializer serializer = new XmlSerializer(typeof(Person));
-            string fileName2 = @"D:\C# Training\Day 5 Tasks\Files\KPXML1.xml";
+            string fileName2 = @"D:\C# Krinal Patel\Day 5 Tasks\Files\KPXML1.xml";
 
             using (FileStream stream = new FileStream(fileName2, FileMode.Create))
             {
@@ -142,11 +114,12 @@ namespace InheritanceTask1
             using (StreamReader reader = new StreamReader(fileName2))
             {
                 Person p4 = (Person)serializer.Deserialize(reader);
-                Console.WriteLine(p4.name);
-                Console.WriteLine(p4.age);
-                Console.WriteLine(p4.city);
+                Console.WriteLine("Name : "+p4.Name);
+                Console.WriteLine("Age : "+p4.Age);
+                Console.WriteLine(p4.City);
             }
             Console.ReadLine();
+
         }
     }
 }
