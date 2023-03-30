@@ -1,10 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Day 5 Tasks\\Task",
-    "\\Day 5 Tasks\\Task\\Serialization",
-    "\\Day 6 Tasks"
+    "\\Day 6 Tasks",
+    "\\Day 6 Tasks\\Day6_Tasks",
+    "\\Day 6 Tasks\\Day6_Tasks\\Day6_Tasks",
+    "\\Day 7 Tasks",
+    "\\Day 7 Tasks\\Day_7_Tasks",
+    "\\Day 7 Tasks\\Day_7_Tasks\\Day_7_Tasks"
   ],
-  "SelectedNode": "\\Day 6 Tasks",
+  "SelectedNode": "\\Day 7 Tasks\\Day_7_Tasks\\Day_7_Tasks\\Program.cs",
   "PreviewInSolutionExplorer": false
 }
