@@ -1,0 +1,29 @@
+[
+  {
+    "FirstName": "Krinal",
+    "LastName": "Patel",
+    "Gender": "Male",
+    "Email": "Krinal@12323",
+    "PhoneNumber": 9408494033,
+    "Designation": 1,
+    "Salary": 10000.0
+  },
+  {
+    "FirstName": "shivam",
+    "LastName": "sathwara",
+    "Gender": "m",
+    "Email": "s@123",
+    "PhoneNumber": 886599449,
+    "Designation": 1,
+    "Salary": 50000.0
+  },
+  {
+    "FirstName": "Renish",
+    "LastName": "Patel",
+    "Gender": "Male",
+    "Email": "r@123",
+    "PhoneNumber": 65455556565,
+    "Designation": 1,
+    "Salary": 14544565.0
+  }
+]
