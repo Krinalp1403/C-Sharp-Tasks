@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using static EmployeeRecord.Program;
 
-namespace EmployeeRecord
+namespace Day_9_Tasks
 {
 
     public static class MyExtensions
@@ -32,31 +30,27 @@ namespace EmployeeRecord
             return number.ToString().Length <= 10;
         }
 
-        public static bool IsValidSalary(this double salary)
-        {
-            return salary >= 10000 && salary <= 50000;
-        }
-
-        public static bool IsValidDesignation(this string designation)
-        {
-            return Enum.GetNames(typeof(EmployeeDesignation)).Contains(designation);
-        }
+       
     }
     public class Program
     {
 
-    
 
-        static List<Employee> employees = new List<Employee>();
+
+        static List<Student> students= new List<Student>();
 
         static void Main(string[] args)
         {
             while (true)
 
             {
-                Console.WriteLine("\n-------------- Employee Management System ---------------");
-                Console.WriteLine("1. Add Employee");
-                Console.WriteLine("2. Display All Employees");
+                Console.WriteLine("\n-------------- Admission Management System ---------------");
+                Console.WriteLine("1. Add Student");
+                Console.WriteLine("2. Display All Students");
+                Console.WriteLine("3. Get Student by ID");
+                Console.WriteLine("4. Delete Student by ID");
+
+
                 Console.WriteLine("0. Exit");
                 Console.Write("Please Enter your choice : ");
                 int choice = Convert.ToInt32(Console.ReadLine());
@@ -64,11 +58,9 @@ namespace EmployeeRecord
                 switch (choice)
                 {
                     case 1:
-
-                        AddEmployee();
+                        AddStudent();
                         break;
                     case 2:
-                        DisplayAllEmployees();
                         break;
                     case 0:
                         Environment.Exit(0);// exit
@@ -80,37 +72,38 @@ namespace EmployeeRecord
                 }
             }
         }
-  
-public enum EmployeeDesignation
+
+        public enum Gender
         {
-    Developer,
-    QA
-}
+            Male,
+            Female
+        }
 
-public class Employee
-{
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Gender { get; set; }
-    public string Email { get; set; }
-    public long PhoneNumber { get; set; }
-    public Program.EmployeeDesignation Designation { get; set; }
-    public double Salary { get; set; }
-}
+        public class Student
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string FullName { get; set; }
+            public Gender Gender { get; set; }
+            public string Email { get; set; }
+            public long PhoneNumber { get; set; }
+            public string Address { get; set; }
+
+        }
 
 
-        static void AddEmployee()
+        static void AddStudent()
         {
 
 
             try
             {
-                Employee emp = new Employee();
+                Student s1 = new Student();
                 //employees
 
                 Console.Write("First Name (Required): ");
-                emp.FirstName = Console.ReadLine().Trim();
-                if (string.IsNullOrEmpty(emp.FirstName))
+                s1.FirstName = Console.ReadLine().Trim();
+                if (string.IsNullOrEmpty(s1.FirstName))
                 {
                     Console.WriteLine("First Name is Required!");
                     Console.ReadKey();
@@ -119,27 +112,30 @@ public class Employee
                 }
 
                 Console.Write("Last Name (Required): ");
-                emp.LastName = Console.ReadLine().Trim();
-                if (string.IsNullOrEmpty(emp.LastName))
+                s1.LastName = Console.ReadLine().Trim();
+                if (string.IsNullOrEmpty(s1.LastName))
                 {
                     Console.WriteLine("Last Name is Required!");
                     Console.ReadKey();
 
                     return;
                 }
+                Console.WriteLine("Full Name : "+ s1.FirstName + s1.LastName);
 
-                Console.Write("Gender (Required): ");
-                emp.Gender = Console.ReadLine().Trim();
-                if (string.IsNullOrEmpty(emp.Gender))
+                Console.Write("Please enter your gender (Male/Female): ");
+                string genderString = Console.ReadLine();
+                Gender gender;
+
+                if (!Enum.TryParse<Gender>(genderString, out gender))
                 {
-                    Console.WriteLine("Gender is Required!");
-                    Console.ReadKey();
+                    Console.WriteLine("Invalid gender input. Please try again.");
                     return;
                 }
 
+
                 Console.Write("Email Address (Required, Must be Valid): ");
-                emp.Email = Console.ReadLine().Trim();
-                if (string.IsNullOrEmpty(emp.Email) || !emp.Email.IsValidEmail())
+                s1.Email = Console.ReadLine().Trim();
+                if (string.IsNullOrEmpty(s1.Email) || !s1.Email.IsValidEmail())
                 {
                     Console.WriteLine("Invalid Email Address!");
                     Console.ReadKey();
@@ -155,33 +151,21 @@ public class Employee
 
                     return;
                 }
-                emp.PhoneNumber = phoneNumber;
+                s1.PhoneNumber = phoneNumber;
 
-                Console.Write("Designation (Required, Should be from Enum, Developer, QA): ");
-                string designationStr = Console.ReadLine().Trim();
-                if (string.IsNullOrEmpty(designationStr) || !Enum.TryParse(designationStr, out EmployeeDesignation desig))
-                {
-                    Console.WriteLine("Designation is Required and Should be from Enum, Developer, QA!");
+                Console.Write("Address : ");
+                string Address = Console.ReadLine().Trim();
+          
                     Console.ReadKey();
 
-                    return;
-                }
-                emp.Designation = desig;
+                
+                
 
-                Console.Write("Salary (Required, Min 10,000 & Max 50,000): ");
-                double salary;
-                if (!double.TryParse(Console.ReadLine().Trim(), out salary) || !salary.IsValidSalary())
-                {
-                    Console.WriteLine("Invalid Salary!");
-                    Console.ReadKey();
-
-                    return;
-                }
-                emp.Salary = salary;
+           
 
                 Console.WriteLine("All Fields are Validated..");
 
-                employees.Add(emp);
+                Student.Add(s1);
 
                 SaveEmployeesToJson();
             }
@@ -217,7 +201,7 @@ public class Employee
 
             File.AppendAllText(fileName, json);
             Console.WriteLine("Employee data saved to KPJSON1.JSON file.");
-        }      
+        }
     }
 
 }
