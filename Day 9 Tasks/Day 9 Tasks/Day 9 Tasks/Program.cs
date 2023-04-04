@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
     namespace Day_9_Tasks
@@ -74,7 +75,9 @@ using System.Xml.Serialization;
                              GetStudentByID();
                              Console.ReadKey();
                              break;
-
+                        case 4:
+                            DeleteStudentByID();
+                            break;
                         case 0:
                             Environment.Exit(0);// exit
                             break;
@@ -95,7 +98,7 @@ using System.Xml.Serialization;
             public class Student
             {
                 public int Id { get; set; }
-            public string FirstName { get; set; }
+                public string FirstName { get; set; }
                 public string LastName { get; set; }
                 public string FullName { get; set; }
                 public Gender Gender { get; set; }
@@ -235,11 +238,22 @@ using System.Xml.Serialization;
         }
         static void GetStudentByID()
         {
-            DisplayAllStudents();
+            string fileName = @"D:\C# Krinal Patel\Day 8 Tasks\Files\KPXML1.xml";
+
+            // Load XML file
+            XDocument xdoc = XDocument.Load(fileName);
+
+            // Display all students
+            DisplayAllStudents(xdoc);
 
             Console.Write("Enter the ID of the student: ");
             int id = Convert.ToInt32(Console.ReadLine());
-            var student = students.FirstOrDefault(s => s.Id == id);
+
+            // Search for student with the given ID
+            var student = xdoc.Descendants("Student")
+                              .Where(s => s.Element("Id").Value == id.ToString())
+                              .FirstOrDefault();
+
             if (student == null)
             {
                 Console.WriteLine("Student not found!");
@@ -247,14 +261,62 @@ using System.Xml.Serialization;
             else
             {
                 Console.WriteLine("Student found:");
-                Console.WriteLine($"Name: {student.FirstName}");
-                Console.WriteLine($"Gender: {student.Gender}");
-                Console.WriteLine($"Email: {student.Email}");
-                Console.WriteLine($"Phone Number: {student.PhoneNumber}");
-                Console.WriteLine($"Address: {student.Address}");
+                Console.WriteLine($"Name: {student.Element("FirstName").Value}");
+                Console.WriteLine($"Gender: {student.Element("Gender").Value}");
+                Console.WriteLine($"Email: {student.Element("Email").Value}");
+                Console.WriteLine($"Phone Number: {student.Element("PhoneNumber").Value}");
+                Console.WriteLine($"Address: {student.Element("Address").Value}");
             }
-           
         }
+
+        static void DisplayAllStudents(XDocument xdoc)
+        {
+            foreach (var student in xdoc.Descendants("Student"))
+            {
+                Console.WriteLine($"ID: {student.Element("Id").Value}");
+                Console.WriteLine($"Name: {student.Element("FirstName").Value} {student.Element("LastName").Value}");
+                Console.WriteLine($"Gender: {student.Element("Gender").Value}");
+                Console.WriteLine($"Email: {student.Element("Email").Value}");
+                Console.WriteLine($"Phone Number: {student.Element("PhoneNumber").Value}");
+                Console.WriteLine($"Address: {student.Element("Address").Value}");
+                Console.WriteLine();
+            }
+        }
+
+     static void DeleteStudentByID()
+{
+    string fileName = @"D:\C# Krinal Patel\Day 8 Tasks\Files\KPXML1.xml";
+
+    // Load XML file
+    XDocument xdoc = XDocument.Load(fileName);
+
+    // Display all students
+    DisplayAllStudents(xdoc);
+
+    Console.Write("Enter the ID of the student to delete: ");
+    int id = Convert.ToInt32(Console.ReadLine());
+
+    // Find the student with the given ID
+    var student = students.FirstOrDefault(s => s.Id == id);
+    if (student == null)
+    {
+        Console.WriteLine("No student with the given ID found.");
+    }
+    else
+    {
+        // Remove the student from the list
+        students.Remove(student);
+        Console.WriteLine("Student with ID {0} deleted.", id);
+
+        // Update the XML file
+        xdoc.Descendants("Students")
+            .Elements("Student")
+            .Where(e => (int)e.Attribute("Id") == id)
+            .Remove();
+        xdoc.Save(fileName);
+    }
+}
+
     }
 
 }
